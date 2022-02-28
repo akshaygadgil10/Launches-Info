@@ -12,7 +12,11 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { launchActions } from '../store/launch-slice';
 import Button from '@material-ui/core/Button';
-
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import Checkbox from '@material-ui/core/Checkbox';
+import LaunchDetails from './LaunchDetails';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
   //new
   title: {
     display: 'none',
+    marginLeft:'10px',
     [theme.breakpoints.up('sm')]: {
       display: 'block',
     },
@@ -80,6 +85,11 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  datefilter: {
+    width: '15%',
+    height: '20%',
+    backgroundColor: alpha(theme.palette.common.white, 0.15),
+  }
 }));
 
 const CardViewList = (props) => {
@@ -88,6 +98,11 @@ const CardViewList = (props) => {
   const dispatch = useDispatch();
   const launchItems = useSelector((state) => state.launch.items);
   const [searchKeyword, setSearchKeyword] = useState();
+  const [dateRange, setDateRange] = React.useState('');
+  const [launchStatus, setLaunchStatus] = React.useState('');
+  const [detailInfo, setDetailInfo] = React.useState('');
+  const [checked, setChecked] = React.useState(true);
+  const [open, setOpen] = React.useState(false)
 
   useEffect(() => {
     console.log('useEffect');
@@ -95,10 +110,28 @@ const CardViewList = (props) => {
   }, [dispatch]);
 
   console.log("launchItems ", launchItems);
-
+ 
+  const handleChangeDateRange = (event) => {
+    setDateRange(event.target.value);
+  };
+  const handleChangeLaunchStatus = (event) => {
+    setLaunchStatus(event.target.value);
+  };
+  const handleChangeCheckbox = (event) => {
+    setChecked(event.target.checked);
+  };
+  const viewDetails =(detail)=> {
+    console.log(detail);
+    setDetailInfo(detail)
+    setOpen(true);
+  }
+  const closeDetails =(detail)=> {
+     setOpen(false);
+  }
   const showResult = () => {
     dispatch(launchActions.searchRocket(searchKeyword))
   }
+  
   return (
     <>
       <div className={classes.root}>
@@ -123,6 +156,47 @@ const CardViewList = (props) => {
                 }}
               />
             </div>
+            <Typography className={classes.title} noWrap>
+              Date Range
+            </Typography>
+            <FormControl className={classes.datefilter}>
+              <Select
+                labelId="demo-simple-select-outlined-label"
+                id="demo-simple-select-outlined"
+                value={dateRange}
+                onChange={handleChangeDateRange}
+                label="Date Range"
+              >
+                <MenuItem value={'last_week'}>Last Week</MenuItem>
+                <MenuItem value={'last_month'}>Last Month</MenuItem>
+                <MenuItem value={'last_year'}>Last Year</MenuItem>
+              </Select>
+            </FormControl>
+
+            <Typography className={classes.title} noWrap>
+               Launch Status
+            </Typography>
+            <FormControl className={classes.datefilter}>
+              <Select
+                labelId="demo-simple-select-outlined-label"
+                id="demo-simple-select-outlined"
+                value={launchStatus}
+                onChange={handleChangeLaunchStatus}
+                label="Date Range"
+              >
+                <MenuItem value={'failure'}>Failure</MenuItem>
+                <MenuItem value={'success'}>Success</MenuItem>
+              </Select>
+            </FormControl>
+            <Typography className={classes.title} noWrap>
+                Upcoming
+            </Typography>
+            <Checkbox
+              checked={checked}
+              color="default"
+              onChange={handleChangeCheckbox}
+              inputProps={{ 'aria-label': 'primary checkbox' }}
+            />
             <div>
               <Button variant="contained" color="primary" onClick={() => showResult()}>
                 ok
@@ -152,11 +226,14 @@ const CardViewList = (props) => {
               wikipedia={launch.links.wikipedia}
               youtube={launch.links.video_link}
               image={launch.links.mission_patch}
-              image_small={launch.links.mission_patch_small}
+              mission_name={launch.mission_name}
+              viewDetails={viewDetails}
+              launch={launch}
             />
           </Grid>
         ))}
       </Grid>
+      <LaunchDetails open={open} detailInfo={detailInfo} closeDetails={closeDetails}/>
     </>
   )
 }

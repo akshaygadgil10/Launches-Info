@@ -5,17 +5,26 @@ import LinkIcon from '@material-ui/icons/Link';
 import YouTubeIcon from '@material-ui/icons/YouTube';
 import VisibilityRoundedIcon from '@material-ui/icons/VisibilityRounded';
 
-const CardView = ({ flight_number, rocket_name,wikipedia,youtube,image,image_small }) => {
+
+const CardView = ({ flight_number, rocket_name,wikipedia,youtube,image,mission_name,viewDetails,launch }) => {
   // console.log(flight_number);
+  const details = (detail) => {
+    // console.log(id);
+    viewDetails(detail)
+  }
   return (
-    <Card >
+    <Card elevation={5} style={{width : '-webkit-fill-available',minHeight:'250px',maxHeight:'360px',padding:'0px'}}>
       <CardContent>
-          <img src={image}  style={{width : '-webkit-fill-available'}}></img>
-          <Typography gutterBottom variant="h5" component="h2">
+          
+          <img src={image?image:'/space-shuttle-discovery.png'} alt="Error in loading image" style={{width : '-webkit-fill-available',minHeight:'160px',maxHeight:'160px',border:'2px solid lightgray'}}></img>
+          <Typography gutterBottom variant="h7" component="h4">
             Flight Number : {flight_number}
           </Typography>
-          <Typography gutterBottom variant="h5" component="h2">
+          <Typography gutterBottom variant="h7" component="h4">
             Rocket Name : {rocket_name}
+          </Typography>
+          <Typography gutterBottom variant="h7" component="h4">
+            Mission Name : {mission_name}
           </Typography>
       </CardContent>
       <CardActions disableSpacing >
@@ -30,7 +39,7 @@ const CardView = ({ flight_number, rocket_name,wikipedia,youtube,image,image_sma
           </IconButton>
         </a>
         <IconButton aria-label="Youtube Video" >
-            < VisibilityRoundedIcon/>
+            < VisibilityRoundedIcon onClick={()=>details(launch)}/>
           </IconButton>
       </CardActions>
     </Card>
