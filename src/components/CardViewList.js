@@ -1,21 +1,22 @@
 /* eslint-disable no-dupe-keys */
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchLaunchData } from '../store/launch-action';
-import CardView from "./CardView";
 import { Grid } from '@material-ui/core';
 import { alpha, makeStyles } from '@material-ui/core/styles';
-import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { launchActions } from '../store/launch-slice';
 import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
+import SearchIcon from '@material-ui/icons/Search';
+import AutorenewIcon from '@material-ui/icons/Autorenew';
+import { fetchLaunchData } from '../store/launch-action';
+import { launchActions } from '../store/launch-slice';
+import CardView from "./CardView";
 import LaunchDetails from './LaunchDetails';
 
 const useStyles = makeStyles((theme) => ({
@@ -31,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   //new
   title: {
     display: 'none',
-    marginLeft:'10px',
+    marginLeft: '10px',
     [theme.breakpoints.up('sm')]: {
       display: 'block',
     },
@@ -101,7 +102,7 @@ const CardViewList = (props) => {
   const [dateRange, setDateRange] = React.useState('');
   const [launchStatus, setLaunchStatus] = React.useState('');
   const [detailInfo, setDetailInfo] = React.useState('');
-  const [checked, setChecked] = React.useState(true);
+  const [checked, setChecked] = React.useState(false);
   const [open, setOpen] = React.useState(false)
 
   useEffect(() => {
@@ -110,28 +111,57 @@ const CardViewList = (props) => {
   }, [dispatch]);
 
   console.log("launchItems ", launchItems);
- 
+
   const handleChangeDateRange = (event) => {
     setDateRange(event.target.value);
+    // dispatch(launchActions.getListByDateRange(event.target.value))
   };
   const handleChangeLaunchStatus = (event) => {
+    // console.log('handleChangeLaunchStatus');
+    // console.log(event.target.value);
     setLaunchStatus(event.target.value);
+    // dispatch(launchActions.getListByStatus(event.target.value))
   };
   const handleChangeCheckbox = (event) => {
     setChecked(event.target.checked);
   };
-  const viewDetails =(detail)=> {
+  const viewDetails = (detail) => {
     console.log(detail);
     setDetailInfo(detail)
     setOpen(true);
   }
-  const closeDetails =(detail)=> {
-     setOpen(false);
+  const closeDetails = (detail) => {
+    setOpen(false);
   }
-  const showResult = () => {
-    dispatch(launchActions.searchRocket(searchKeyword))
-  }
+  // console.log('dateRange', dateRange);
+  // console.log('launchStatus', launchStatus);
+  // console.log('checked', checked);
   
+  const showResult = () => {
+    let data = {}
+
+    if(searchKeyword || !searchKeyword){
+      console.log('sear call()');
+      dispatch(launchActions.searchRocket(searchKeyword))
+    }
+    if(dateRange){
+      console.log('dateRange call()');
+      dispatch(launchActions.getListByDateRange(dateRange))
+    }
+    
+    if (launchStatus){
+      console.log('laun call()');
+      dispatch(launchActions.getListByStatus(launchStatus))
+    }
+    if(checked){
+      console.log('check call()');
+    }
+    else{
+      console.log('else');
+    }
+    dispatch(launchActions.getUpcommingList(checked))
+  }
+
   return (
     <>
       <div className={classes.root}>
@@ -167,6 +197,7 @@ const CardViewList = (props) => {
                 onChange={handleChangeDateRange}
                 label="Date Range"
               >
+                <MenuItem value={'none'}>None</MenuItem>
                 <MenuItem value={'last_week'}>Last Week</MenuItem>
                 <MenuItem value={'last_month'}>Last Month</MenuItem>
                 <MenuItem value={'last_year'}>Last Year</MenuItem>
@@ -174,7 +205,7 @@ const CardViewList = (props) => {
             </FormControl>
 
             <Typography className={classes.title} noWrap>
-               Launch Status
+              Launch Status
             </Typography>
             <FormControl className={classes.datefilter}>
               <Select
@@ -184,12 +215,13 @@ const CardViewList = (props) => {
                 onChange={handleChangeLaunchStatus}
                 label="Date Range"
               >
+                <MenuItem value={'none'}>None</MenuItem>
                 <MenuItem value={'failure'}>Failure</MenuItem>
                 <MenuItem value={'success'}>Success</MenuItem>
               </Select>
             </FormControl>
             <Typography className={classes.title} noWrap>
-                Upcoming
+              Upcoming
             </Typography>
             <Checkbox
               checked={checked}
@@ -198,26 +230,15 @@ const CardViewList = (props) => {
               inputProps={{ 'aria-label': 'primary checkbox' }}
             />
             <div>
-              <Button variant="contained" color="primary" onClick={() => showResult()}>
+              <Button variant="contained" color="primary" 
+                onClick={() => showResult()}
+                >
                 ok
               </Button>
             </div>
           </Toolbar>
         </AppBar>
       </div>
-      {/* <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </div> */}
       <Grid container spacing={2}>
         {launchItems.map((launch) => (
           <Grid item xs={6} sm={3} >
@@ -233,7 +254,7 @@ const CardViewList = (props) => {
           </Grid>
         ))}
       </Grid>
-      <LaunchDetails open={open} detailInfo={detailInfo} closeDetails={closeDetails}/>
+      <LaunchDetails open={open} detailInfo={detailInfo} closeDetails={closeDetails} />
     </>
   )
 }
