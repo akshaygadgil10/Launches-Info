@@ -7,16 +7,12 @@ import VisibilityRoundedIcon from '@material-ui/icons/VisibilityRounded';
 
 
 const CardView = ({ flight_number, rocket_name,wikipedia,youtube,image,mission_name,viewDetails,launch }) => {
-  // console.log(flight_number);
   const details = (detail) => {
-    // console.log(id);
     viewDetails(detail)
   }
   return (
     <Card elevation={5} style={{width : '-webkit-fill-available',minHeight:'360px',maxHeight:'360px',padding:'0px'}}>
-    {/* <Card elevation={5} style={{width : '-webkit-fill-available',minHeight:'250px',maxHeight:'360px',padding:'0px'}}> */}
       <CardContent>
-          
           <img src={image?image:'/space-shuttle-discovery.png'} alt="Error in loading image" style={{minHeight:'160px',maxHeight:'160px',border:'2px solid lightgray'}}></img>
           <Typography gutterBottom variant="h7" component="h4">
             Flight Number : {flight_number}

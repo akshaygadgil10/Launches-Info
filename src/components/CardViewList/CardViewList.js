@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { Grid } from '@material-ui/core';
-import { alpha, makeStyles } from '@material-ui/core/styles';
 import InputBase from '@material-ui/core/InputBase';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -13,88 +12,13 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
 import SearchIcon from '@material-ui/icons/Search';
-import AutorenewIcon from '@material-ui/icons/Autorenew';
-import { fetchLaunchData } from '../store/launch-action';
-import { launchActions } from '../store/launch-slice';
-import CardView from "./CardView";
-import LaunchDetails from './LaunchDetails';
+import { fetchLaunchData } from '../../store/launch-action';
+import { launchActions } from '../../store/launch-slice';
+import CardView from "../CardView/CardView.js";
+import LaunchDetails from '../LaunchDetails/LaunchDetails.js';
+import useStyles from './styles';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    marginBottom: '10px'
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  },
-  //new
-  title: {
-    display: 'none',
-    marginLeft: '10px',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
-    },
-  },
-  search: {
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      width: 'auto',
-    },
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  inputRoot: {
-    color: 'inherit',
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
-  },
-  sectionDesktop: {
-    display: 'none',
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
-    },
-  },
-  sectionMobile: {
-    display: 'flex',
-    [theme.breakpoints.up('md')]: {
-      display: 'none',
-    },
-  },
-  datefilter: {
-    width: '15%',
-    height: '20%',
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-  }
-}));
-
-const CardViewList = (props) => {
-  console.log("CardViewList");
+const CardViewList = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const launchItems = useSelector((state) => state.launch.items);
@@ -106,58 +30,34 @@ const CardViewList = (props) => {
   const [open, setOpen] = React.useState(false)
 
   useEffect(() => {
-    console.log('useEffect');
     dispatch(fetchLaunchData());
   }, [dispatch]);
 
-  console.log("launchItems ", launchItems);
-
   const handleChangeDateRange = (event) => {
     setDateRange(event.target.value);
-    // dispatch(launchActions.getListByDateRange(event.target.value))
   };
   const handleChangeLaunchStatus = (event) => {
-    // console.log('handleChangeLaunchStatus');
-    // console.log(event.target.value);
     setLaunchStatus(event.target.value);
-    // dispatch(launchActions.getListByStatus(event.target.value))
   };
   const handleChangeCheckbox = (event) => {
     setChecked(event.target.checked);
   };
   const viewDetails = (detail) => {
-    console.log(detail);
     setDetailInfo(detail)
     setOpen(true);
   }
   const closeDetails = (detail) => {
     setOpen(false);
   }
-  // console.log('dateRange', dateRange);
-  // console.log('launchStatus', launchStatus);
-  // console.log('checked', checked);
-  
   const showResult = () => {
-    let data = {}
-
-    if(searchKeyword || !searchKeyword){
-      console.log('sear call()');
+    if (searchKeyword || !searchKeyword) {
       dispatch(launchActions.searchRocket(searchKeyword))
     }
-    if(dateRange){
-      console.log('dateRange call()');
+    if (dateRange) {
       dispatch(launchActions.getListByDateRange(dateRange))
     }
-    
-    if (launchStatus){
-      console.log('laun call()');
+    if (launchStatus) {
       dispatch(launchActions.getListByStatus(launchStatus))
-    }
-    if(checked){
-      console.log('check call()');
-    }
-    else{
-      console.log('else');
     }
     dispatch(launchActions.getUpcommingList(checked))
   }
@@ -232,7 +132,7 @@ const CardViewList = (props) => {
             <div>
               <Button variant="contained" color="primary" 
                 onClick={() => showResult()}
-                >
+              >
                 ok
               </Button>
             </div>

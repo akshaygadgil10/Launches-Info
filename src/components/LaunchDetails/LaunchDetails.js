@@ -42,8 +42,6 @@ const DialogContent = withStyles((theme) => ({
 
 
 export default function LaunchDetails(props) {
-    console.log(props);
-    const [open, setOpen] = React.useState(false);
 
     const handleClose = () => {
         props.closeDetails(false)
@@ -52,7 +50,9 @@ export default function LaunchDetails(props) {
     return (
         <div  >
             <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={props.open} fullWidth={true} maxWidth={'md'}>
-                <img src={props.detailInfo.links?.mission_patch ? props.detailInfo.links.mission_patch : '/space-shuttle-discovery.png'} alt="Error in loading image" style={{ width: '-webkit-fill-available', minHeight: '350px', maxHeight: '500px', border: '2px solid lightgray' }}></img>
+                <img src={props.detailInfo.links?.mission_patch ? props.detailInfo.links.mission_patch : '/space-shuttle-discovery.png'} alt="Error in loading image"
+                 style={{ width: '-webkit-fill-available', minHeight: '350px', maxHeight: '500px', border: '2px solid lightgray' }}
+                 ></img>
                 <DialogTitle id="customized-dialog-title" onClose={handleClose}>
                     <Typography gutterBottom variant="h8" component="h4">Flight Number : {props.detailInfo.flight_number}</Typography>
                     <Typography gutterBottom variant="h8" component="h4">Rocket Name : {props.detailInfo.rocket?.rocket_name}</Typography>

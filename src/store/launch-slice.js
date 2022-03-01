@@ -13,33 +13,24 @@ const launchSlice = createSlice({
       state.records = action.payload.items;
     },
     searchRocket(state, action) {
-      console.log(action);
-      if (action.payload == '' || !action.payload) {
-        console.log('blank search');
+      if (action.payload === '' || !action.payload) {
         state.items = [...state.records]
       }
       else {
-        console.log('search else');
         state.items = state.records.filter(item => item.rocket.rocket_name.toLowerCase().includes(action.payload.toLowerCase()))
-        // state.items = state.records.filter(item => item.rocket.rocket_name.toLowerCase() === action.payload.toLowerCase())
       }
     },
     getListByDateRange(state, action) {
-      console.log(action);
       const currentDate = new Date();
       var noOfDays;
-      var listName;
       switch (action.payload) {
         case 'last_week':
-          console.log('week');
           noOfDays = 7;
           break;
         case 'last_month':
-          console.log('month');
           noOfDays = 31
           break;
         case 'last_year':
-          console.log('year');
           noOfDays = 365
           break;
 
@@ -55,17 +46,14 @@ const launchSlice = createSlice({
       })
     },
     getListByStatus(state, action) {
-      console.log(action);
       //select none
-      if (action.payload == 'none') {
-        console.log('none');
+      if (action.payload === 'none') {
         state.items = [...state.item]
       }
       else
-      state.items = state.items.filter(item => item.launch_success === (action.payload == 'failure' ? false : true));
+      state.items = state.items.filter(item => item.launch_success === (action.payload === 'failure' ? false : true));
     },
     getUpcommingList(state, action) {
-      console.log(action);
       state.items = state.items.filter(item => item.upcoming === (action.payload  ? true : false));
     },
   },
