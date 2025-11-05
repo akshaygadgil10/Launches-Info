@@ -6,7 +6,7 @@
 
 ## Getting started
 
-You can view a live demo over at https://launches-records.herokuapp.com/
+You can view a live demo over at [https://launches-records.herokuapp.com/](https://akshaygadgil10.github.io/Launches-Info/)
 
 To get the frontend running locally:
 
