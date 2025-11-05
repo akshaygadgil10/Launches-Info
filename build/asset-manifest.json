@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Launches-Info/static/css/main.829707da.css",
+    "main.js": "/Launches-Info/static/js/main.c4f1da74.js",
+    "static/js/787.90735bd5.chunk.js": "/Launches-Info/static/js/787.90735bd5.chunk.js",
+    "index.html": "/Launches-Info/index.html",
+    "main.829707da.css.map": "/Launches-Info/static/css/main.829707da.css.map",
+    "main.c4f1da74.js.map": "/Launches-Info/static/js/main.c4f1da74.js.map",
+    "787.90735bd5.chunk.js.map": "/Launches-Info/static/js/787.90735bd5.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.829707da.css",
+    "static/js/main.c4f1da74.js"
+  ]
+}
