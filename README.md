@@ -2,7 +2,7 @@
 > ### Launcher Info React JS Application
 
 
-### [Demo](https://launches-records.herokuapp.com/)&nbsp;&nbsp;&nbsp;&nbsp;
+### [Demo]([https://launches-records.herokuapp.com](https://akshaygadgil10.github.io/Launches-Info/)/)&nbsp;&nbsp;&nbsp;&nbsp;
 
 ## Getting started
 
